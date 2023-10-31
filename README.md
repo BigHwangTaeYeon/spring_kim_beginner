@@ -44,3 +44,13 @@ Interface를 도입하면 추상화라는 비용이 발생한다.
 ### DIP 위반
 private final MemberRepository memberRepository = new MemoryMemberRepository();
 추상화에도 의존하고 구체화에도 의존한다.
+* DIP 위반  DiscountPolicy추상 인터페이스 FixDiscountPolicy, RateDiscountPolicy 구체 클래스
+* OrderServiceImpl(주문)는 DiscountPolicy만 의존해야하지만 현재는 FixDiscountPolicy, RateDiscountPolicy까지 함께 의존하고 있다.
+* FixDiscountPolicy에서 RateDiscountPolicy로 변경하는 순간 OrderServiceImpl도 코드를 수정(discountPolicy 인스턴스 변경)하게 되는 문제
+private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+위 코드에서 아래코드로 변경하면서 DIP 문제 해결
+private DiscountPolicy discountPolicy;
+
+AppConfig.java에서 정책에 따른 인스턴스를 생성자를 통해 주입해준다.(생성자 주입)
+
