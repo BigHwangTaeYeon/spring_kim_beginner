@@ -7,7 +7,7 @@ import hello.core.member.MemberRepository;
 public class OrderServiceImpl implements OrderService{
 
     // private final MemberRepository memberRepository = new MemoryMemberRepository();
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
     // 고정 할인 금액에서 비율로 변경
     // private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService{
      * 
      * private DiscountPolicy discountPolicy; 로 변경하여 문제점 해결
      */
-    private DiscountPolicy discountPolicy;
+    private final DiscountPolicy discountPolicy;
     // 이제야 DIP를 지킨다.
 
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {

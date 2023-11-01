@@ -18,9 +18,11 @@ public class OderApp {
         Member member = new Member(memberId, "memberA", Grade.VIP);
         memberService.join(member);
 
-        Order order = orderService.creatOrder(memberId, "itemA", 10000);
+        Order order = orderService.creatOrder(memberId, "itemA", 20000);
 
         System.out.println("order = " + order);
         System.out.println("order.caculatePrice = " + order.calculatePrice());
+        
+        System.out.println("discount : " + order.getDiscountPrice());
     }
 }
