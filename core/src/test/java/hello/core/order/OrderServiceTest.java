@@ -23,7 +23,7 @@ public class OrderServiceTest {
     @BeforeEach
     public void BeforeEach() {
         AppConfig appConfig = new AppConfig();
-        memberService = appConfig.MemberService();
+        memberService = appConfig.memberService();
         orderService = appConfig.orderService();
     }
 
