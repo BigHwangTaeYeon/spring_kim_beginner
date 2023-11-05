@@ -16,6 +16,9 @@ import hello.core.member.MemoryMemberRepository;
 @Configuration
 public class AppConfig {
 
+    // @Bean memeberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository()
+
     // private final MemberRepository memberRepository = new MemoryMemberRepository();
     // MemberRepository에 대한 설정을 MemberServiceImpl에서 직접 했지만
     // 이제는 AppConfig에서 설정을 정리해준다.
@@ -40,6 +43,7 @@ public class AppConfig {
     @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
+        // return new OrderServiceImpl();
     }
 
     @Bean
