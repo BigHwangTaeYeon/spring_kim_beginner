@@ -1,18 +1,18 @@
 package hello.core.Order;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor // lombok annotation
+// @RequiredArgsConstructor // lombok annotation
 public class OrderServiceImpl implements OrderService{
 
     // private final MemberRepository memberRepository = new MemoryMemberRepository();
-    // @Autowired
+    @Autowired
     private final MemberRepository memberRepository;
     // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
     // 고정 할인 금액에서 비율로 변경
@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService{
      * 
      * private DiscountPolicy discountPolicy; 로 변경하여 문제점 해결
      */
-    // @Autowired
+    @Autowired
     private final DiscountPolicy discountPolicy;
     // 이제야 DIP를 지킨다.
 
@@ -38,11 +38,11 @@ public class OrderServiceImpl implements OrderService{
     //     this.memberRepository = memberRepository;
     // }
 
-    // @Autowired
-    // public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-    //     this.discountPolicy = discountPolicy;
-    //     this.memberRepository = memberRepository;
-    // }
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy){
+        this.discountPolicy = discountPolicy;
+        this.memberRepository = memberRepository;
+    }
 
     // @Autowired
     // public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy){
