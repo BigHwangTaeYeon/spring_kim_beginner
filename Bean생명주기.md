@@ -17,5 +17,69 @@ DB Connection pool이나, 네트워크 소켓처럼 어플리케이션 시작 �
 
 ### 빈 생명주기 콜백 3가지
 1) 인터페이스(initializingBean, DisposableBean)
+    1. implements InitializingBean
+        - afterPropertiesSet() 의존관계 주입이 끝나면 호출
+    2. implements DisposableBean
+        - void destroy() 종료(disconnect()) 시 호출
+
+    // 의존관계 주입이 끝나면 이라는 뜻이다 void afterPropertiesSet() throws Exception;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    // 종료 void destroy() throws Exception
+    @Override
+    public void destroy() throws Exception {
+        disconnect();
+    }
+
+    이 인터페이스는 Spring에서 지원하기에 너무 의존적이다는 단점이 있다.
+    외부 라이브러리에 적용할 수 없다.
+
 2) 설정 정보에 초기화 메서드, 종료 메서드 지정
+    @Bean(initMethod = "init", destroyMethod = "close")
+
+    class NetworkClient
+    // 의존관계 주입이 끝나면 이라는 뜻이다 void afterPropertiesSet() throws Exception;
+    public void init()  {
+        connect();
+        call("초기화 연결 메시지");
+    }
+    // 종료 void destroy() throws Exception
+    public void close() throws Exception {
+        disconnect();
+    }
+
+    class BeanLifecycleTest
+    @Configuration
+    static class lifecycleConfig {
+        @Bean(initMethod = "init", destroyMethod = "close")
+        public NetworkClient networkClient() {
+            NetworkClient networkClient = new NetworkClient();
+            networkClient.setUrl("http://hello.com");
+            return networkClient;
+        }
+    }
+
+    ** 코드를 고칠 수 없는 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있다. **
+    Bean 등록시에만 호출된다.
+
 3) @PostConstruct, @PreDestroy 어노테이션 지원
+    이방법을 사용하면 된다.
+    
+    @PostConstruct
+    public void init()  {
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    @PreDestroy
+    public void close() throws Exception {
+        disconnect();
+    }
+
+    권장사항, java interface의 모음, Spring의 종속적이지 않다.
+    ** 외부 라이브러리에 적용하지 못한다. **
+
